@@ -127,5 +127,5 @@ namespace TinySTL{
 	};// end of class vector
 }
 
-#include "Vector.impl.h"//具体实现
+#include "Vector.cpp"//具体实现
 #endif
