@@ -62,18 +62,18 @@
 		difference_type locationLeft = endOfStorage_ - finish_; //未使用空间的剩余大小
 		difference_type locationNeed = distance(first, last);//要插入元素的数目
 
-		if (locationLeft >= locationNeed){//未使用空间够分配
-			if (finish_ - position > locationNeed){//尾部元素数目大于要插入元素的数目
+		if (locationLeft >= locationNeed){
+			if (finish_ - position > locationNeed){
 				TinySTL::uninitialized_copy(finish_ - locationNeed, finish_, finish_);//从finish_开始,挪以finish_为结尾的要插入元素数目个元素(因为要插入元素的数目一定小于未使用空间的数目,所以先挪这么多,再挪其它的,这样不会出现溢出的情况)
 				std::copy_backward(position, finish_ - locationNeed, finish_);//将没挪的尾部元素挪到后面
-				std::copy(first, last, position);//插入操作
+				std::copy(first, last, position);
 			}
 			else{//尾部元素数目小于等于要插入元素的数目
 				iterator temp = TinySTL::uninitialized_copy(first + (finish_ - position), last, finish_);//首先填充数目为尾部元素数目和插入元素数目之差的元素
 				TinySTL::uninitialized_copy(position, finish_, temp);//向后挪尾部元素
 				std::copy(first, first + (finish_ - position), position);//插入操作
 			}
-			finish_ += locationNeed;//重定向尾部迭代器
+			finish_ += locationNeed;
 		}
 		else{
 			reallocateAndCopy(position, first, last);//分配新的空间,并且复制插入点之前的元素,复制插入的元素,复制插入点之后的元素
@@ -86,14 +86,14 @@
 		//新空间的大小
 		difference_type newCapacity = getNewCapacity(last - first);
 		T *newStart = dataAllocator::allocate(newCapacity);//分配新的空间
-		T *newEndOfStorage = newStart + newCapacity;//重定向迭代器
+		T *newEndOfStorage = newStart + newCapacity;
 		T *newFinish = TinySTL::uninitialized_copy(begin(), position, newStart);//复制插入元素之前的元素
 		newFinish = TinySTL::uninitialized_copy(first, last, newFinish);//复制插入元素
 		newFinish = TinySTL::uninitialized_copy(position, end(), newFinish);//复制插入元素之后的元素
 		destroyAndDeallocateAll();//销毁原来的vector
-		start_ = newStart;//重定向迭代器
-		finish_ = newFinish;//同上
-		endOfStorage_ = newEndOfStorage;//同上
+		start_ = newStart;
+		finish_ = newFinish;
+		endOfStorage_ = newEndOfStorage;
 	}
 		
 	//==成员函数运算符重载
